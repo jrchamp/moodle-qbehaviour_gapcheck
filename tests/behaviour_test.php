@@ -1,6 +1,18 @@
 <?php
-
-defined('MOODLE_INTERNAL') || die();
+// This file is part of Moodle - https://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Unit tests for the gapcheck question behaviour.
@@ -17,9 +29,8 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright 2026 Matthias Giger
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qbehaviour_gapcheck_behaviour_test extends qbehaviour_walkthrough_test_base {
-
-    public function test_submit_correct_answer() {
+final class behaviour_test extends qbehaviour_walkthrough_test_base {
+    public function test_submit_correct_answer(): void {
         $this->quba->set_preferred_behaviour('gapcheck');
 
         $sa = test_question_maker::make_question('shortanswer');
@@ -37,7 +48,7 @@ class qbehaviour_gapcheck_behaviour_test extends qbehaviour_walkthrough_test_bas
         );
     }
 
-    public function test_submit_wrong_answer() {
+    public function test_submit_wrong_answer(): void {
         $this->quba->set_preferred_behaviour('gapcheck');
 
         $sa = test_question_maker::make_question('shortanswer');
@@ -47,7 +58,7 @@ class qbehaviour_gapcheck_behaviour_test extends qbehaviour_walkthrough_test_bas
         $this->check_current_state(question_state::$gradedwrong);
     }
 
-    public function test_submit_incomplete() {
+    public function test_submit_incomplete(): void {
         $this->quba->set_preferred_behaviour('gapcheck');
 
         $sa = test_question_maker::make_question('shortanswer');
@@ -60,7 +71,7 @@ class qbehaviour_gapcheck_behaviour_test extends qbehaviour_walkthrough_test_bas
         );
     }
 
-    public function test_save_then_submit() {
+    public function test_save_then_submit(): void {
         $this->quba->set_preferred_behaviour('gapcheck');
 
         $sa = test_question_maker::make_question('shortanswer');
@@ -73,7 +84,7 @@ class qbehaviour_gapcheck_behaviour_test extends qbehaviour_walkthrough_test_bas
         $this->check_current_state(question_state::$gradedright);
     }
 
-    public function test_finish_without_submit() {
+    public function test_finish_without_submit(): void {
         $this->quba->set_preferred_behaviour('gapcheck');
 
         $sa = test_question_maker::make_question('shortanswer');
@@ -85,7 +96,7 @@ class qbehaviour_gapcheck_behaviour_test extends qbehaviour_walkthrough_test_bas
         $this->check_current_state(question_state::$gradedright);
     }
 
-    public function test_finish_without_answer() {
+    public function test_finish_without_answer(): void {
         $this->quba->set_preferred_behaviour('gapcheck');
 
         $sa = test_question_maker::make_question('shortanswer');
@@ -96,7 +107,7 @@ class qbehaviour_gapcheck_behaviour_test extends qbehaviour_walkthrough_test_bas
         $this->check_current_state(question_state::$gaveup);
     }
 
-    public function test_get_salt_consistency() {
+    public function test_get_salt_consistency(): void {
         $qa = new question_attempt(new question_definition(), 1, null, 1);
 
         $salt1 = qbehaviour_gapcheck::get_salt($qa);
@@ -105,7 +116,7 @@ class qbehaviour_gapcheck_behaviour_test extends qbehaviour_walkthrough_test_bas
         $this->assertEquals($salt1, $salt2);
     }
 
-    public function test_process_answer_rows_full_and_partial() {
+    public function test_process_answer_rows_full_and_partial(): void {
         global $PAGE;
         $salt = '1|99|1';
 
@@ -127,7 +138,7 @@ class qbehaviour_gapcheck_behaviour_test extends qbehaviour_walkthrough_test_bas
         $this->assertContains(hash_hmac('sha256', 'paris', $salt), $entry['p']);
     }
 
-    public function test_process_answer_rows_numerical_tolerance() {
+    public function test_process_answer_rows_numerical_tolerance(): void {
         global $PAGE;
         $salt = '1|99|1';
 
@@ -150,7 +161,7 @@ class qbehaviour_gapcheck_behaviour_test extends qbehaviour_walkthrough_test_bas
         $this->assertContains(hash_hmac('sha256', '3.14', $salt), $entry['h']);
     }
 
-    public function test_process_answer_rows_skips_wildcard() {
+    public function test_process_answer_rows_skips_wildcard(): void {
         global $PAGE;
         $salt = '1|99|1';
 
@@ -168,7 +179,7 @@ class qbehaviour_gapcheck_behaviour_test extends qbehaviour_walkthrough_test_bas
         $this->assertContains(hash_hmac('sha256', 'Paris', $salt), $entry['h']);
     }
 
-    public function test_fallback_hash_single() {
+    public function test_fallback_hash_single(): void {
         global $PAGE;
         $salt = '1|99|1';
 
@@ -181,7 +192,7 @@ class qbehaviour_gapcheck_behaviour_test extends qbehaviour_walkthrough_test_bas
         $this->assertEquals(['h' => [hash_hmac('sha256', 'Berlin', $salt)]], $entry);
     }
 
-    public function test_fallback_hash_pipe() {
+    public function test_fallback_hash_pipe(): void {
         global $PAGE;
         $salt = '1|99|1';
 
@@ -196,7 +207,7 @@ class qbehaviour_gapcheck_behaviour_test extends qbehaviour_walkthrough_test_bas
         $this->assertContains(hash_hmac('sha256', 'London', $salt), $entry['h']);
     }
 
-    public function test_renderer_output_has_structured_format() {
+    public function test_renderer_output_has_structured_format(): void {
         $this->quba->set_preferred_behaviour('gapcheck');
 
         $sa = test_question_maker::make_question('shortanswer');
@@ -219,7 +230,7 @@ class qbehaviour_gapcheck_behaviour_test extends qbehaviour_walkthrough_test_bas
         }
     }
 
-    public function test_renderer_output_contains_correct_hash() {
+    public function test_renderer_output_contains_correct_hash(): void {
         $this->quba->set_preferred_behaviour('gapcheck');
 
         $sa = test_question_maker::make_question('shortanswer');

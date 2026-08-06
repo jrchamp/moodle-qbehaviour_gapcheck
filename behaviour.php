@@ -1,6 +1,18 @@
 <?php
-
-defined('MOODLE_INTERNAL') || die();
+// This file is part of Moodle - https://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Question behaviour that provides per-gap instant visual feedback
@@ -21,7 +33,7 @@ defined('MOODLE_INTERNAL') || die();
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class qbehaviour_gapcheck extends question_behaviour_with_save {
-    const IS_ARCHETYPAL = true;
+    public const IS_ARCHETYPAL = true;
 
     public function is_compatible_question(question_definition $question) {
         return $question instanceof question_automatically_gradable;
@@ -104,7 +116,7 @@ class qbehaviour_gapcheck extends question_behaviour_with_save {
             $pendingstep->set_state(question_state::$invalid);
         } else {
             $response = $pendingstep->get_qt_data();
-            list($fraction, $state) = $this->question->grade_response($response);
+            [$fraction, $state] = $this->question->grade_response($response);
             $pendingstep->set_fraction($fraction);
             $pendingstep->set_state($state);
             $pendingstep->set_new_response_summary($this->question->summarise_response($response));
@@ -121,7 +133,7 @@ class qbehaviour_gapcheck extends question_behaviour_with_save {
         if (!$this->question->is_gradable_response($response)) {
             $pendingstep->set_state(question_state::$gaveup);
         } else {
-            list($fraction, $state) = $this->question->grade_response($response);
+            [$fraction, $state] = $this->question->grade_response($response);
             $pendingstep->set_fraction($fraction);
             $pendingstep->set_state($state);
         }
@@ -131,8 +143,10 @@ class qbehaviour_gapcheck extends question_behaviour_with_save {
 
     public function process_save(question_attempt_pending_step $pendingstep) {
         $status = parent::process_save($pendingstep);
-        if ($status == question_attempt::KEEP &&
-                $pendingstep->get_state() == question_state::$complete) {
+        if (
+            $status == question_attempt::KEEP &&
+            $pendingstep->get_state() == question_state::$complete
+        ) {
             $pendingstep->set_state(question_state::$todo);
         }
         return $status;
