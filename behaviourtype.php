@@ -26,14 +26,29 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class qbehaviour_gapcheck_type extends question_behaviour_type {
+    /**
+     * Whether this behaviour can be selected in the UI.
+     *
+     * @return bool
+     */
     public function is_archetypal() {
         return true;
     }
 
+    /**
+     * Whether the attempt may finish during the attempt.
+     *
+     * @return bool
+     */
     public function can_questions_finish_during_the_attempt() {
         return true;
     }
 
+    /**
+     * The display options that this behaviour does not use.
+     *
+     * @return array the unused display options
+     */
     public function get_unused_display_options() {
         return [];
     }

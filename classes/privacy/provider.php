@@ -29,6 +29,11 @@ namespace qbehaviour_gapcheck\privacy;
  */
 class provider implements
     \core_privacy\local\metadata\null_provider {
+    /**
+     * The string identifier of the reason why this plugin stores no data.
+     *
+     * @return string the language string identifier
+     */
     public static function get_reason(): string {
         return 'privacy:metadata';
     }

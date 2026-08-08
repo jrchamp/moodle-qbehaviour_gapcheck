@@ -51,6 +51,17 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class qbehaviour_gapcheck_renderer extends qbehaviour_renderer {
+    /**
+     * Render the controls for the question attempt.
+     *
+     * Outputs the CSS rules (once per page), the hidden hashmap div
+     * with the salted per-gap hashes, the AMD init call with a
+     * fallback for late amd loading, and the submit button.
+     *
+     * @param question_attempt $qa the question attempt
+     * @param question_display_options $options the display options
+     * @return string the rendered controls HTML
+     */
     public function controls(question_attempt $qa, question_display_options $options) {
         if ($options->readonly) {
             return '';
