@@ -14,6 +14,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
+namespace qbehaviour_gapcheck;
+
+use qbehaviour_walkthrough_test_base;
+use question_answer;
+use question_attempt;
+use question_definition;
+use question_display_options;
+use ReflectionClass;
+use test_question_maker;
+
+defined('MOODLE_INTERNAL') || die();
+
+global $CFG;
+require_once($CFG->dirroot . '/question/engine/tests/helpers.php');
+
 /**
  * Unit tests for the gapcheck question behaviour.
  *
